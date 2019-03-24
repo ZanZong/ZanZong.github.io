@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.zzwr.site/friends/index.html</loc>
+    
+    <lastmod>2019-03-24T08:46:37.213Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.zzwr.site/about/index.html</loc>
+    
+    <lastmod>2019-03-24T08:45:38.634Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.zzwr.site/categories/index.html</loc>
+    
+    <lastmod>2019-03-24T07:47:46.550Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.zzwr.site/tags/index.html</loc>
+    
+    <lastmod>2019-03-24T07:46:20.406Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.zzwr.site/passages/hello-world/</loc>
     
     <lastmod>2019-03-24T02:31:34.979Z</lastmod>
