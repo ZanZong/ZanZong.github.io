@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.zzwr.site/"/>
-  <updated>2019-03-24T02:31:34.979Z</updated>
+  <updated>2019-03-24T12:34:47.329Z</updated>
   <id>http://www.zzwr.site/</id>
   
   <author>
@@ -17,23 +17,127 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://www.zzwr.site/passages/hello-world/"/>
-    <id>http://www.zzwr.site/passages/hello-world/</id>
-    <published>2019-03-24T02:31:34.978Z</published>
-    <updated>2019-03-24T02:31:34.979Z</updated>
+    <title>latex-test</title>
+    <link href="http://www.zzwr.site/passages/b5c6204e.html"/>
+    <id>http://www.zzwr.site/passages/b5c6204e.html</id>
+    <published>2019-03-24T12:21:50.000Z</published>
+    <updated>2019-03-24T12:34:47.329Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>\begin{equation}\begin{split}<br>H(Y|X)&amp;=\sum_{x\in X} p(x)H(Y|X)\\<br>&amp;=-\sum_{x\in X} p(x)\sum_{y\in Y}p(y|x)\log p(y|x)\\<br>&amp;=-\sum_{x\in X} \sum_{y\in Y}p(y,x)\log p(y|x)<br>\end{split}\end{equation}</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;p&gt;\begin{equation}\begin{split}&lt;br&gt;H(Y|X)&amp;amp;=\sum_{x\in X} p(x)H(Y|X)\\&lt;br&gt;&amp;amp;=-\sum_{x\in X} p(x)\sum_{y\in Y}p(y|x)\log p(y|x)\\&lt;br&gt;&amp;
       
     
     </summary>
     
+    
+  </entry>
+  
+  <entry>
+    <title>计算机系统常用性能指标</title>
+    <link href="http://www.zzwr.site/passages/2785cf3a.html"/>
+    <id>http://www.zzwr.site/passages/2785cf3a.html</id>
+    <published>2019-03-24T11:21:24.000Z</published>
+    <updated>2019-03-24T13:06:09.746Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="计算机系统常用性能指标"><a href="#计算机系统常用性能指标" class="headerlink" title="计算机系统常用性能指标"></a>计算机系统常用性能指标</h2><h3 id="Cycles-per-instruction（CPI）"><a href="#Cycles-per-instruction（CPI）" class="headerlink" title="Cycles per instruction（CPI）"></a>Cycles per instruction（CPI）</h3><p>表示每条计算机指令执行所需的时钟周期，简称指令的平均周期数，即<strong>一个指令被执行时所使用的时钟周期数量</strong>。对于一个程序，计算该程序执行完需要多少条机器指令（ins_num），并结合实际的硬件性能计算出需要多少个时钟周期来完成(cyc_num)<br>，可以得到该段程序在这个硬件上的CPI。对于不同的CPU，运行相同的负载得到的CPI是不同的，因此可以作为衡量不同CPU性能的一项指标。  <a id="more"></a><br>CPI = 执行程序所需要的时钟周期数 / 所执行的指令条数<br>实际上，大多数情况下一段程序会包含多种不同类型的指令，不同类型的指令运行需要不同的指令周期数，可使用如下公式计算<br>\begin{equation}\begin{split}<br>CPI = \frac{\sum_i (IC_i)(CC_i)}{IC}<br>\end{split}\end{equation}<br>其中${IC_i}$是指令类型为i的指令个数，${CC_i}$是完成指令类型i所需要的时钟周期（clock-cycles）个数。$IC=\sum_i{IC_i}$是所有类型指令个数的和。  </p><h3 id="Instructions-per-cycle（IPC）"><a href="#Instructions-per-cycle（IPC）" class="headerlink" title="Instructions per cycle（IPC）"></a>Instructions per cycle（IPC）</h3><p>即CPI的倒数</p><h3 id="Millions-of-instructions-per-second-（MIPS）"><a href="#Millions-of-instructions-per-second-（MIPS）" class="headerlink" title="Millions of instructions per second （MIPS）"></a>Millions of instructions per second （MIPS）</h3><p>Instructions per second（IPS），与CPI类似，也是一种衡量CPU性能的指标。它描述了指令的执行速率，规定了性能和执行时间成反比，即与IPC成正比，与CPI成反比。MIPS这种指标的缺点是没有考虑指令的能力，对于使用不同指令集的计算机，相同的程序产生的指令数是不同的，因此无法用MIPS来比较不同指令集的计算机，这个问题也出现在CPI和IPC以上两个指标上。<br>\begin{equation}\begin{split}<br>MIPS = \frac{指令数}{执行时间\times{10^6}} = \frac{时钟频率}{CPI\times{10^6}}<br>\end{split}\end{equation}  </p><p>引用用wiki上的一个例子：<br>一个400-MHz的处理器，运行一个基准测试负载，该负载所包含的指令信息以及指令周期数如下表所示  </p><div class="table-container"><table><thead><tr><th style="text-align:center">Instruction TYPE</th><th style="text-align:center">Instruction count</th><th style="text-align:center">Clock cycle count</th></tr></thead><tbody><tr><td style="text-align:center">Integer Arithmetic</td><td style="text-align:center">45000</td><td style="text-align:center">1</td></tr><tr><td style="text-align:center">Data transfer</td><td style="text-align:center">32000</td><td style="text-align:center">2</td></tr><tr><td style="text-align:center">Floating point</td><td style="text-align:center">15000</td><td style="text-align:center">2</td></tr><tr><td style="text-align:center">Control transfer</td><td style="text-align:center">8000</td><td style="text-align:center">2</td></tr></tbody></table></div><p>\begin{equation}\begin{split}<br>CPI = \frac{45000\times{1}+32000\times{2}+15000\times{2}+8000\times{2}}{100000} = 1.55<br>\end{split}\end{equation}  </p><p>400MHz = 400,000,000 Hz，假如用MIPS来衡量处理器性能，则有<br>\begin{equation}\begin{split}<br>MIPS = \frac{ClockFrequency}{CPI}\times\frac{1}{1 Million} = \frac{400,000,000}{1.55\times{1000000}} = 258 MIPS<br>\end{split}\end{equation}<br>执行所需的CPU时间为<br>\begin{equation}\begin{split}<br>Execution Time = CPI\times{Instruction count}\times{clocktime}\\<br>= \frac{CPI\times{instruction Count}}{ClockFrequency} = \frac{1.55\times{100000}}{400\times{1000000}} = \frac{1.55}{4000}\ <br>= 0.0003875 sec = 0.3785 ms<br>\end{split}\end{equation}  </p><h3 id="CACHE"><a href="#CACHE" class="headerlink" title="CACHE"></a>CACHE</h3><p>CPU要读取一个数据时，首先从Cache中查找，如果找到就立即读取并送给CPU处理；如果没有找到，就用相对慢的速度从内存中读取并送给CPU处理，同时把这个数据所在的数据块调入Cache中，可以使得以后对整块数据的读取都从Cache中进行，不必再调用内存。CPU在Cache中找到有用的数据被称为命中，当Cache中没有CPU所需的数据时（这时称为未命中），CPU才访问内存。为了保证CPU访问时有较高的命中率，Cache中的内容应该按一定的算法替换，其计数器清零过程可以把一些频繁调用后再不需要的数据淘汰出Cache，提高Cache的利用率。</p><p><a href="https://en.wikipedia.org/wiki/Cycles_per_instruction" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Cycles_per_instruction</a><br><a href="https://baike.baidu.com/item/CPU%E7%BC%93%E5%AD%98" target="_blank" rel="noopener">https://baike.baidu.com/item/CPU%E7%BC%93%E5%AD%98</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;计算机系统常用性能指标&quot;&gt;&lt;a href=&quot;#计算机系统常用性能指标&quot; class=&quot;headerlink&quot; title=&quot;计算机系统常用性能指标&quot;&gt;&lt;/a&gt;计算机系统常用性能指标&lt;/h2&gt;&lt;h3 id=&quot;Cycles-per-instruction（CPI）&quot;&gt;&lt;a href=&quot;#Cycles-per-instruction（CPI）&quot; class=&quot;headerlink&quot; title=&quot;Cycles per instruction（CPI）&quot;&gt;&lt;/a&gt;Cycles per instruction（CPI）&lt;/h3&gt;&lt;p&gt;表示每条计算机指令执行所需的时钟周期，简称指令的平均周期数，即&lt;strong&gt;一个指令被执行时所使用的时钟周期数量&lt;/strong&gt;。对于一个程序，计算该程序执行完需要多少条机器指令（ins_num），并结合实际的硬件性能计算出需要多少个时钟周期来完成(cyc_num)&lt;br&gt;，可以得到该段程序在这个硬件上的CPI。对于不同的CPU，运行相同的负载得到的CPI是不同的，因此可以作为衡量不同CPU性能的一项指标。
+    
+    </summary>
+    
+      <category term="计算机系统" scheme="http://www.zzwr.site/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="性能指标" scheme="http://www.zzwr.site/tags/%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spark RDD 宽依赖窄依赖介绍</title>
+    <link href="http://www.zzwr.site/passages/d3b4b981.html"/>
+    <id>http://www.zzwr.site/passages/d3b4b981.html</id>
+    <published>2019-03-24T11:20:29.000Z</published>
+    <updated>2019-03-24T11:42:33.201Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>本文将介绍Spark RDD两种依赖关系——宽依赖、窄依赖，及其产生的相关特性</p></blockquote><hr><h2 id="Resilient-Distributed-Datasets"><a href="#Resilient-Distributed-Datasets" class="headerlink" title="Resilient Distributed Datasets"></a>Resilient Distributed Datasets</h2><p>RDD是一个容错、并行的数据结构，它可以直接将中间结果数据保存到内存中，通过控制数据分区优化存储，并提供丰富的数据操作接口<a href="http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf" target="_blank" rel="noopener">（nsdi2012）</a>。RDD的容错机制，使用一种粗粒度的transform来控制———RDD记录了如何产生结果数据的transform，而非实际的数据（即计算是lazy的），如果RDD的某个分区丢失，可以根据transform信息重新计算该partition来恢复丢失的数据。  <a id="more"></a>简言之，transformations使用lazy的操作定义了一个新的RDD,actions 触发计算执行并返回真正的结果数据。</p><h2 id="RDD-特性"><a href="#RDD-特性" class="headerlink" title="RDD 特性"></a>RDD 特性</h2><p>对于Apache Spark，RDD有如下的特性：</p><ul><li>RDD是只读对象</li><li>RDD可以通过加载本地文件系统或分布式文件系统中的数据获得（还可以通过数据+schema，通过SparkContext创建），或者通过其他RDD的transform变换得到。</li><li>数据的transformation操作是lazy的，Spark会根据transformation来构建DAG图，真正的计算执行由action来触发。</li><li>当内存不足时，RDD会溢出到磁盘上，并带来性能损失。</li><li>RDD具有容错机制，当一个RDD的部分partition丢失后，可以通过该RDD的<code>父RDD</code>重新计算该partition来恢复。</li><li>RDD适合用于实现批处理应用（Spark Streaming也是以micro batch的方式实现流计算模型）</li></ul><p>关于RDD的表达方式，作为一个抽象的数据对象，RDD使用以下5种信息来表达:  </p><ul><li>分区（partitions）：每个partition对应一个文件系统上的block，通过<code>partitions()</code>方法返回RDD的每个partition。  </li><li>依赖（dependencies）： 在父RDD上执行计算操作（function）来得到当前的RDD，通过<code>dependencies()</code>方法返回的依赖列表，获得该RDD的所有依赖。  </li><li>计算操作（function）：每个partition可以获得iterator对象，并实现作用于该迭代器的计算，完成特定的任务，如对分区中的每个元素map操作。  </li><li>分区方式（partition schema）：给出如何将数据划分到不同的partition的方法，Spark内置实现了两种partitioner——<code>HashPartitioner</code>和<code>RangePartitioner</code>。 </li><li>优先访问位置（data placement）：由于不同的partition可能存储在不同的机器，暴露出<code>preferredLocations(p)</code>方法来获得访问最快的数据存储节点列表，即partition p的优先访问位置。    </li></ul><h2 id="RDD依赖关系"><a href="#RDD依赖关系" class="headerlink" title="RDD依赖关系"></a>RDD依赖关系</h2><p>Spark将所有RDD构造成一个DAG图，RDD的容错机制依赖于lineage。如果一个RDD计算出错或丢失，那么可以从它的父RDD重新计算得到。所依赖的父RDD越少，这种recovery的代价就越小。根据数据是否可以以pipeline的方式在RDD之间转换，可以将依赖划分为宽依赖和窄依赖。<br><img src="/images/uploads/2018/08/rdd-deps-pic.png" alt></p><h4 id="窄依赖（narrow-dependencies）"><a href="#窄依赖（narrow-dependencies）" class="headerlink" title="窄依赖（narrow dependencies）"></a>窄依赖（narrow dependencies）</h4><p>父RDD的每个partition只能被一个子RDD所依赖，即父子partition的关系为<code>一对一</code>或<code>多对一</code>，例如map操作。<br>如上图左侧所示，常见的<code>map</code>、<code>filter</code>、<code>union</code>操作，不会影响RDD partition。对于输入已经进行协同划分(co-partitioned)的<code>join</code>操作，即数据已经事先按照key分组（也即是两个RDD有相同的Partitioner），也属于窄依赖。如图，进行协同划分后的两个父RDD，其子RDD的每个partiiton仅需依赖两个父RDD的partition。若子RDD<code>key1</code>所在分区计算失败，则仅仅需要重新计算该分区，拉取其依赖的两个partition。</p><blockquote><p>所谓协同划分，就是指定分区划分器以产生前后一致的分区安排。Pregel和HaLoop把这个作为系统内置的一部分；而Spark 默认提供两种划分器：HashPartitioner和RangePartitioner，允许程序通过partitionBy算子指定。Spark也允许用户自定义Partitioner来控制如何分区。</p></blockquote><h4 id="宽依赖（wide-dependencies）"><a href="#宽依赖（wide-dependencies）" class="headerlink" title="宽依赖（wide dependencies）"></a>宽依赖（wide dependencies）</h4><p>子RDD的每个partition都依赖于父RDD的所有partition，即存在<code>多对一</code>的关系，如groupByKey操作。<br>如上图右侧所示，在进行groupBy或无协同划分的join时，子RDD partition需要从父RDD的每个partition中拉取数据进行计算，即进行<code>shuffle</code>操作。分区对于shuffle操作很关键——如上图所示，同样对于join操作，进行协同划分后，两个父RDD之间、父RDD与子RDD之间能形成一致的分区，即保证了相同的key映射到同一分区，形成窄依赖；反之没有协同划分（上图右下），则形成宽依赖。</p><h4 id="Stage划分"><a href="#Stage划分" class="headerlink" title="Stage划分"></a>Stage划分</h4><p>在窄依赖的流程中，Spark可以以pipeline的方式计算各个RDD，即数据按照各部窄依赖操作向后流动，无需等每个节点计算完后再计算下一节点，大大提高计算性能。而一旦碰上宽依赖，该流水线则停止。例如执行groupByKey操作的RDD，需要每个分区都计算完成后，再进行shuffle操作，得到新的partition（上图右上）。<br>Spark将task划分为多个<code>stage</code>，而stage就是根据依赖关系来划分的。Spark DAGScheduler将回溯当前的RDD依赖图，每当遇到宽依赖，则将之前的task划分为一个stage，以此往复得到多个stage，每个stage中以pipeline的方式执行。因此每个stage的最后一个task往往是耗时的shuffle操作。</p><h4 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h4><p><em>分区丢失</em><br>基于lineage的实现非常有利于系统容错。假如发生节点宕机，丢失RDD A的partition 1，若是窄依赖，只需要求RDD A的父RDD存在，根据父RDD对应分区重算即可，跟其他节点没有依赖；而若是宽依赖，则需要所有父RDD的所有分区都存在，重新计算的代价较高。<br><em>设置检查点</em><br>如果RDD依赖的lineage较长，Spark提供API<code>rdd.checkpoint</code>使用checkpoint这个transform操作来做检查点。checkpoint操作会将该RDD数据写入到SparkContext中配置的CheckpointDir，持久化到磁盘（HDFS）。可以考虑在计算耗时的宽依赖设置检查点。  </p><h4 id="优化机制"><a href="#优化机制" class="headerlink" title="优化机制"></a>优化机制</h4><p><em>缓存</em><br>假如需要计算<code>rdd.count()</code>，若第一次执行，则Spark会将该rdd的所有依赖进行计算（注意RDD不是数据，只是记录着如何产生该数据），得到count的结果。但如果代码中再次调用<code>rdd.count()</code>呢？Spark会和上次一样重新查找rdd的依赖，计算出结果，造成了重复的计算。为了解决这种问题，Spark RDD暴露了两个接口<code>cache</code>和<code>persist</code>。其中，<code>persist</code>可以设置多种<a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence" target="_blank" rel="noopener">缓存级别</a>，而<code>cache</code>等同于<code>persist(MEMORY_ONLY)</code>。<br><em>广播变量</em><br>根据Spark官方文档，适合将“static look up tables”设置为广播变量。即在RDD计算过程中，可能需要一些静态的信息用于查询，如在map中访问一个人员信息的List，该List内容不可变。尽管在<code>map</code>中可以直接访问这些变量，但可能需要跨机器的访问这些数据，当数据量较大时，就产生了<code>shuffle</code>。因此，将一些不可变的数据，以broadcast的形式，分发到每个节点，使得查询过程避免了<code>shuffle</code>操作。</p><p>参考文献：<br>[1].<a href="http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf" target="_blank" rel="noopener">http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf</a><br>[2].<a href="https://blog.csdn.net/houmou/article/details/52531205" target="_blank" rel="noopener">https://blog.csdn.net/houmou/article/details/52531205</a><br>[3].<a href="http://www.beingsoftwareprofessional.com/2016/02/04/apache-spark-rdd/" target="_blank" rel="noopener">http://www.beingsoftwareprofessional.com/2016/02/04/apache-spark-rdd/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;本文将介绍Spark RDD两种依赖关系——宽依赖、窄依赖，及其产生的相关特性&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;Resilient-Distributed-Datasets&quot;&gt;&lt;a href=&quot;#Resilient-Distributed-Datasets&quot; class=&quot;headerlink&quot; title=&quot;Resilient Distributed Datasets&quot;&gt;&lt;/a&gt;Resilient Distributed Datasets&lt;/h2&gt;&lt;p&gt;RDD是一个容错、并行的数据结构，它可以直接将中间结果数据保存到内存中，通过控制数据分区优化存储，并提供丰富的数据操作接口&lt;a href=&quot;http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;（nsdi2012）&lt;/a&gt;。RDD的容错机制，使用一种粗粒度的transform来控制———RDD记录了如何产生结果数据的transform，而非实际的数据（即计算是lazy的），如果RDD的某个分区丢失，可以根据transform信息重新计算该partition来恢复丢失的数据。
+    
+    </summary>
+    
+      <category term="大数据系统" scheme="http://www.zzwr.site/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="Spark" scheme="http://www.zzwr.site/tags/Spark/"/>
+    
+      <category term="大数据" scheme="http://www.zzwr.site/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我陪着你呀</title>
+    <link href="http://www.zzwr.site/passages/29bba495.html"/>
+    <id>http://www.zzwr.site/passages/29bba495.html</id>
+    <published>2019-03-24T11:17:16.000Z</published>
+    <updated>2019-03-24T11:47:38.740Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="我陪着你啊"><a href="#我陪着你啊" class="headerlink" title="我陪着你啊"></a>我陪着你啊</h1><a id="more"></a><p>这是大兄弟收<code>xue</code>获<code>dao</code>颇<code>beng</code>丰<code>kui</code>的一年。好在完美毕业了，郑州的四年生活告一段落。不过，嗯……好像我要再陪你毕业一次，我自己才能毕业==</p><hr><p>我们的距离从六百多公里缩短到了三公里！！！给我家大兄弟疯狂的打call❤❤</p><hr><p>那年夏天刚刚结束，你出现在了我的生活中，从此幸福指数暴涨๑•ᴗ•๑不得不说这么久的异地真的让人心疼，你不知道我有多想回去陪着你，哪怕最简单的一起上课、吃饭，都是奢侈。不过好在希望就在前方，我在这儿等你啊。<br>这会是个很长很长的文章，我会一直更下去</p><center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=26343110&auto=1&height=66"></iframe><center>---<center>☟祭出debug神器☟![](/images/uploads/2017/03/2.jpg)</center><center>冬 · 夏![](/images/uploads/2017/03/20170323223919.jpg)</center><center>日常![](/images/uploads/2017/03/192838.jpg)</center><center>把手给我啊![](/images/uploads/2017/04/20170408142928.jpg)</center><center>Spring Time![](/images/uploads/2017/04/201704luoyang1.png)</center><center>北京的春天![](/images/uploads/2017/04/20170422102617.jpg)</center><center>wr和zz在zzu![](/images/uploads/2017/06/20170627.jpg)</center><center>短暂的暑假![](/images/uploads/2017/10/201710032.jpg)![](/images/uploads/2017/10/2017100301.jpg)</center><center>Happy Ending，敌军还有十分钟到达战场哈哈哈![](/images/uploads/2017/10/201710033.jpg)</center><center>![](/images/uploads/2018/01/201801-25_meitu_0.jpg)</center><center>你是一只毕业饼啦![](/images/uploads/2018/06/IMG_20180612_231116_meitu_1.jpg)哼嗬哈嘿![](/images/uploads/2018/06/20180618184702.jpg)</center><center>迟到的毕业旅行 New Beginning！！![](/images/uploads/2018/08/sichuan_2.jpg)</center></center></center>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;我陪着你啊&quot;&gt;&lt;a href=&quot;#我陪着你啊&quot; class=&quot;headerlink&quot; title=&quot;我陪着你啊&quot;&gt;&lt;/a&gt;我陪着你啊&lt;/h1&gt;
+    
+    </summary>
+    
+      <category term="生活" scheme="http://www.zzwr.site/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="日常" scheme="http://www.zzwr.site/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Apache Hadoop YARN 产生背景和需求</title>
+    <link href="http://www.zzwr.site/passages/6c658b9d.html"/>
+    <id>http://www.zzwr.site/passages/6c658b9d.html</id>
+    <published>2019-03-24T10:25:44.000Z</published>
+    <updated>2019-03-24T12:41:16.893Z</updated>
+    
+    <content type="html"><![CDATA[<hr><p>本文主要翻译自论文：<br><a href="https://www.sics.se/~amir/files/download/dic/2013%20-%20Apache%20Hadoop%20YARN:%20Yet%20Another%20Resource%20Negotiator%20%28SoCC%29.pdf" target="_blank" rel="noopener">Apache Hadoop YARN: Yet Another Resource Negotiator</a></p><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>Hadoop设计之初，目的在于使用MapReduce作业，处理大量的网络数据。得益于快速增长的各类科技公司,Hadoop成为了数据和计算资源的“市场”——数据和计算资源共享。广泛而普遍的使用，超出了它最初的设计目标，让它暴露出两个关键的缺点：</p><blockquote><ol><li>编程模型（MapReduce）和资源管理框架之间紧密的联系，迫使开发者滥用MapReduce模型。</li><li>集中式的作业流程控制（JobTrack和TaskTrack），使得调度的面临扩展问题（集群job数量越大越明显）</li></ol></blockquote><a id="more"></a><p>在这篇文章中，总结了关于下一代Hadoop资源管理框架YARN的设计、开发以及部署情况。新的架构，从资源管理的功能中解耦了编程模型（mapreduce），并且增加了许多针对application的调度功能。并由相关的实验数据，证明了该架构确实行之有效，实验数据来源于Yahoo的Hadoop集群。并通过运行在YARN上的计算框架，例如Dryad、Giraph、Hoya、Hadoop MapReduce、REEF、Spark、Storm、Tez等，证明YARN具有良好的扩展性。</p><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h2><p>Apache Hadoop是一个开源的实现了MapReduce模型的计算框架之一，最初主要解决<strong>搜索引擎面临的海量的数据扩展性差</strong>的问题，并着重于数据密集型计算的<strong>容错性</strong>的问题，被很多大型网络公司和创业公司所使用。更重要的是，它成为了一个工程是和研究人员获得计算资源和存储资源的平台。这导致了Hadoop的成功，也带来了很多骂声，因为很多开发者滥用MapReduce导致了程序过多的使用了集群资源。举个栗子，一个常见的场景就是提交“map-only”的作业时，产生大量map task个而不考虑集群资源，还有就是web server这种长的负载以及成群的需要迭代计算的负载。而开发者为了自己获得足够的物理资源，常常通过一些方法来回避MapReduce API的限制，去占用了过多的资源。</p><p>正是这些局限性和资源的滥用，产生了以Hadoop为基础的环境无关方面的论文，很多论文暴露了Hadoop架构和实现方面的问题，以及资源滥用来带的负面影响。并且这些Hadoop架构中的局限性已经被学术界和开源社区所认识。</p><p>本文中，展示了一些由社区主导的来推动Hadoop发展的成果，以及下一代Hadoop计算平台组件YARN。它是从之前整体的架构中，将之前对于每个作业调度的资源管理功能从编程模型中分离出来。在这种新的架构中，MapReduce运行在YARN上的众多应用中的一种，使得在选择计算框架时有很大的灵活性而不仅限于Hadoop MapReduce，并且可以动态的调整以获得性能（可能是资源利用率）的提高。</p><h2 id="2-历史"><a href="#2-历史" class="headerlink" title="2 历史"></a>2 历史</h2><p>YARN的需求是在Hadoop MapReduce发展过程中产生的。随着集群规模的扩大和用户的增多，逐渐暴露出来的弊端促进了Hadoop MapReduce的发展，其中的经验和问题催生了YARN，列举如下：</p><blockquote><ol><li>扩展性</li><li>多租户</li><li>可维护性</li><li>存储位置敏感</li><li>高集群利用率</li><li>可用性</li><li>安全和审计操作的功能</li><li>多样化的编程模型</li><li>灵活的资源模型</li><li>向后兼容性</li></ol></blockquote><p>在实践中YARN的需求时怎样产生的呢？从2006年起，Yahoo！开始采用Apache Hadoop作为基础设施来运行其“WebMap”应用，它构建了一个web网站之间的<code>图（graph）</code>结构，该应用为其搜索引擎提供服务。同时，该网站图（web graph）包含了超过一千亿个节点和一万亿的边。之前名为<code>Dreadnaught</code>的底层基础设施在800台机器的集群中已经遇到了扩展的瓶颈，因此需要一个代替它的框架。Dreadnaught是不能满足类似于MapReduce的分布式作业的，因此需要采用扩展性较好的MapReduce框架，来实现搜索业务的顺利迁移。因此<strong>扩展性</strong>成为了早期Hadoop版本以至于后来的YARN着重考虑的因素。</p><p>除了雅虎搜索引擎大规模的流水作业，在广告分析优化、垃圾邮件过滤、内容优化等方面的需求也驱动了Hadoop发展。同时，Hadoop社区为了扩展Hadoop平台以适应更大规模的MapReduce作业，<strong>多租户</strong>的目标开始成型。在这个过程中，大家也更好的理解了工程开发的优先级和一些中间的阶段。</p><h3 id="2-1-专用集群的时代"><a href="#2-1-专用集群的时代" class="headerlink" title="2.1 专用集群的时代"></a>2.1 专用集群的时代</h3><p>一些早期的Hadoop用户将集群部署在少数节点上，从HDFS加载数据，通过MapReduce计算数据并拉取结果。随着Hadoop的容错机制的完善，将数据持久化到HDFS成为了一个标准。而在雅虎，工程师将加载数据集到一个共享的集群中，这吸引了研究人员兴趣。尽管大规模的计算仍然是开发Hadoop的主要动力，然而HDFS也需要权限模型，分配机制等特性来提高多租户使用的能力。</p><p>为了定位一些多租户使用的问题，雅虎开发并部署了Hadoop on Demand（<code>HOD</code>），它使用<a href="http://www.adaptivecomputing.com/products/open-source/torque/" target="_blank" rel="noopener"><code>Torque</code></a>和<a href="http://www.adaptivecomputing.com/products/open-source/maui/" target="_blank" rel="noopener"><code>Maui</code></a>共享集群物理资源并分配给Hadoop。用户可以向Torque在共享资源池中为作业申请节点，作业会被提交到队列中等待，直到有足够节点可用时才开始运行。当作业运行时，HoD会在主节点启动一个leader进程，它会和Torque，Maui通信并启动slave，随后启动<code>JobTracker</code>和<code>TaskTracker</code>。当用户使用完资源后，节点会被释放，重新回到资源池中。因为HoD为每个作业都启动一个新的集群，所以开发者在测试新版本Hadoop的同时，旧版本Hadoop的运行不受影响。然而Hadoop每三个月就会更新一次主版本，HoD的灵活性难以跟得上这个节奏，于是需要对HoD进行解耦升级工作——增加<strong>可维护性</strong>。</p><p>由于HoD中也可以部署HDFS集群，大多数用户部署计算节点时使用了共享的HDFS实例。随着HDFS集群规模扩展，越来越多的计算节点运行在HDFS的服务之上，提高了数据的用户密度，形成了一个良性循环，打开了一块新的天地。</p><p>实践证明HoD是一个通用框架，它拥有一些<code>Mesos</code>的特性，扩展了framework-master模型，来支持多样的并发编程模型的动态资源分配。它也可以被认为是私有云先驱者，例如AWS的EC2 Elastic MapReduce，微软的Azure HDInsight</p><h3 id="2-2-Hadoop不能满足需求"><a href="#2-2-Hadoop不能满足需求" class="headerlink" title="2.2 Hadoop不能满足需求"></a>2.2 Hadoop不能满足需求</h3><p>雅虎最后由于平庸的集群资源利用率而淘汰了HoD。在<code>map</code>阶段，JobTracker力求task放在离输入数据最近的节点上，最近的当然就是存储该数据的HDFS块所在的节点上。但是由于Torque在分配节点时没有考虑数据位置，分配给用户JobTracker的节点中，可能只包含了部分的数据副本，因此很可能这台机器上并没有task所需的输入数据，于是就需要从其他节点上拉取数据。当作业由大量的task都需要这样的时候，资源争抢会异常激烈。当TaskTracker分布的各个机架时，更增加了跨机架读取数据的可能性，并且在<code>shuffle</code>的时候必然要跨机架的拉取数据，使得按DAG执行的后面的作业也如此。因此关于<strong>存储的位置敏感</strong>（Locality awareness），也是YARN的关键需求之一。</p><p>高层的框架，例如Pig、Hive常常构造MapReduce的工作流成为一个有向无环图（<code>DAG</code>），在计算的每个阶段过滤、聚和、转换数据。因为在使用HoD时，集群大小在创建后是不能调整的，大量的集群资源在等待其他作业执行时是空闲的。一个极端但是却常见的情况就是，只在一个节点上运行的<code>reduce task</code>可能会因为运行时间过长导致该节点资源一直无法被收回，而其他节点此时是空闲的。</p><p>最后，作业响应时间由集群分配时间主导的，而用户很难判断作业到底需要多少节点去执行，常常凭直觉去申请数以十倍的资源。而集群分配时间又很长，以至于用户分配到资源后常常和同事一起使用，这使得这些资源一直被占着无法释放，从而形成让资源分配时间更长的恶性循环。尽管如此，用户也深爱着HoD的一些特性，从经济的角度考量，使得雅虎必须让员工使用共享的集群资源。因此，<strong>高集群利用率</strong>成了YARN的一个高优先级需求。</p><h3 id="2-3-共享集群"><a href="#2-3-共享集群" class="headerlink" title="2.3 共享集群"></a>2.3 共享集群</h3><p>最后，HoD已经无法合理的在资源分配时做出选择，资源分配的粒度太粗，并且它的API迫使用户写一些令人误解的对申请资源的约束条件。然而，向共享集群前进的意义是巨大的。尽管HDFS的规模在过去几年中逐渐扩大，上层的JobTracker却已经被<code>HoD</code>隔离开了。当去掉<code>HoD</code>之后，MapReduce集群规模突然增大，作业吞吐量剧烈增加，一些特性被平白无故的加入到JobTracker中，为一些大bug的埋下了隐患。更糟糕的，一个JobTracker的失败可导致运行中断，并且该集群中所有的作业需要用户手动重新按工作流执行，而之前只是会丢掉当前这一个工作流程的结果。</p><p>集群停掉之后，作业流水线上积累了很多待执行的作业，当集群重启后，JobTracker的压力猛增。以至于重启后常常需要手动杀死一些用户的作业，直到集群被正常的启动。由于每个作业存储的复杂性，在集群重启时保护已提交作业的实现方案一直存在着BUG。</p><p>维护一个多租户的的Hadoop集群是很困难的。当很多接口暴露给用户时，<code>容错能力</code>成了核心的设计原则。针对单点失败，暴露出各种关于可用性的问题，并指出持续的在集群中监控作业是有争议的。具体来说，因为JobTracker需要为每个作业分配监进程的资源，它的访问控制逻辑包含了安全机制来确保自身的可用性；它可能延迟分配出可用资源，因为JobTracker为了监控作业使用了过多的资源。这些都可归结到<strong>可用性</strong>方面上。</p><p>当Hadoop集群的租户增多，并且提交作业类型以及数据来源多种多样，于是资源隔离的问题凸显出来。但是授权模型不够强大，并且没有良好的扩展性，这是多租户集群的一个关键问题。<strong>安全和审计操作</strong>的功能必须在YARN中保留。开发者逐渐增强了这个系统，使其不同于以往基于<code>槽</code>（slot）的资源管理，来适应多样化的资源需求。</p><p>虽然MapReduce支持广泛的使用场景，但并不是一个对所有大规模计算都理想的模型。例如，很多机器学习算法的需要多次的迭代才能得出结果。如果一系列的Mapreduce作业包含这种计算，无疑调度的开销会延迟结果的产生。类似的，<a href="https://en.wikipedia.org/wiki/Bulk_synchronous_parallel" target="_blank" rel="noopener"><code>BSP</code></a>（bulk-synchronous parallel model）模型可以更好的表示许多图算法。 相比于大规模的MapReduce作业的容错机制中的all-to-all的交互障碍，图的节点之间的交互是更合适的。（<em>all-to-all:from a Map stage to the next Reduce stage, one-to-one:from a Reduce stage to the next Map stage.</em><a href="http://dprg.cs.uiuc.edu/docs/iss-socc/socc077-ko.pdf" target="_blank" rel="noopener">另一篇论文</a>）。这种不协调阻碍了用户的生产力，然而MapReduce的中心资源模型是<code>无资源竞争模型</code>。Hadoop在Yahoo的广泛部署以及其数据流水线的重要性加剧了这种矛盾，更糟糕的是，用户通常使用多种框架编写MapReduce程序。对于调度器而言，这种作业被视为<code>map-only</code>的作业，它们常常有完全不同的资源使用曲线，使平台的对作业的预估不准确，拉低了资源利用率，容易产生死锁并增大了不稳定性。因此，YARN必须支持<strong>多样化的编程模型</strong>。</p><p>除了与新型框架需求的不匹配之外，<code>槽</code>的类型固定也会损害利用率。尽管将槽划分为map槽和reduce槽可以防止槽死锁，但这也成为了资源使用的瓶颈。在Hadoop中，由用户为每个作业设置两个阶段的重叠部分，晚启动reduce作业可以增加集群的吞吐量，而早启动reduce作业可以减少执行的时延。map槽和reduce槽的数量是由集群管理员设定的，map槽不能执行reduce task，反之，reduce槽也不能执行map task。因为map task和reduce task的比例通常是不同的，所以没有一种配置能够完美的平衡。任意一种槽出现饱和，<code>JobTracker</code>就很难再初始化新的作业并顺利执行。可实现复杂的调度但又不浪费集群的资源，这突出了对<strong>灵活的资源模型</strong>的需求。</p><p>尽管相比于<code>HoD</code>，共享集群提高了资源利用率，它也引起了对可维护性和可用性的担忧。在集群中部署新版本Hadoop是一件需要很谨慎也很平常的事儿，当修复了MapReduce实现中的bug，需要重启集群再提交作业。通过将资源管理平台和编程框架合并，使它们都得到了发展；当用户提升了平台分配资源的效率，与平台整合的框架也要相应的改变。尽管升级通常仅仅只需要重新编译，但用户的对框架内部细节的一些假设（或者开发者对用户程序的一些假设）也可能会产生一些不兼容。</p><p><center>![](/images/uploads/2017/04/20170409110122.jpg)图一 YARN架构（蓝色的是YARN的系统组件，黄色和粉色是两个运行在YARN上的应用）</center><br>建立在Apache Hadoop MapReduce发展的基础上，YARN就是为了解决这些需求（R1-R9）。然而有大量的已经部署的MapReduce应用，以及Hadoop生态系统中相关的项目，使得YARN在设计需要保持兼容性，新架构需要尽量重用之前框架的代码。这也是YARN的最后一个需求：<strong>向后兼容性</strong>。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;p&gt;本文主要翻译自论文：&lt;br&gt;&lt;a href=&quot;https://www.sics.se/~amir/files/download/dic/2013%20-%20Apache%20Hadoop%20YARN:%20Yet%20Another%20Resource%20Negotiator%20%28SoCC%29.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Apache Hadoop YARN: Yet Another Resource Negotiator&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h2&gt;&lt;p&gt;Hadoop设计之初，目的在于使用MapReduce作业，处理大量的网络数据。得益于快速增长的各类科技公司,Hadoop成为了数据和计算资源的“市场”——数据和计算资源共享。广泛而普遍的使用，超出了它最初的设计目标，让它暴露出两个关键的缺点：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;编程模型（MapReduce）和资源管理框架之间紧密的联系，迫使开发者滥用MapReduce模型。&lt;/li&gt;
+&lt;li&gt;集中式的作业流程控制（JobTrack和TaskTrack），使得调度的面临扩展问题（集群job数量越大越明显）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="大数据" scheme="http://www.zzwr.site/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+      <category term="大数据" scheme="http://www.zzwr.site/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+      <category term="资源调度" scheme="http://www.zzwr.site/tags/%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6/"/>
     
   </entry>
   

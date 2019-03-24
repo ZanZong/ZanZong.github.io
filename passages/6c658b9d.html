@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Zan Zong">
+  
+  
+  <title>Apache Hadoop YARN 产生背景和需求 | ZZWR</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="大数据,大数据,资源调度,">
+  
+
+  
+  <meta name="description" content="本文主要翻译自论文：Apache Hadoop YARN: Yet Another Resource Negotiator摘要Hadoop设计之初，目的在于使用MapReduce作业，处理大量的网络数据。得益于快速增长的各类科技公司,Hadoop成为了数据和计算资源的“市场”——数据和计算资源共享。广泛而普遍的使用，超出了它最初的设计目标，让它暴露出两个关键的缺点：编程模型（MapReduce）和资源管理框架之间紧密的联系，迫使开发者滥用MapReduce模型。集中式的作业流程控制（JobTrack和TaskTrack），使得调度的面临扩展问题（集群job数量越大越明显）">
+
+  
+
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"fPaBH0tHQKc8K6ezf2to1iGW-gzGzoHsz","appkey":"gBTkf9YLaOCKxIjLKqNU3BS2","comment":true,"count":true},
+    welcome: {"enable":true,"interval":30},
+    start_time: "2018-03-12",
+    passwords: [],
+    is_post: true,
+    lock: false,
+    author: "Zan Zong",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/th-32x32.jpg">
+    <link rel="apple-touch-icon" href="/images/th.jpg">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">ZZWR</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 饼的日常</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/ZanZong" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-24
+    </span>
+    
+      <span>
+        | <a href="/categories/大数据/"><i class="fa fa-bookmark"></i>大数据</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Apache Hadoop YARN 产生背景和需求
+  </h1>
+  
+  <article class="passage-article">
+    <p>在这篇文章中，总结了关于下一代Hadoop资源管理框架YARN的设计、开发以及部署情况。新的架构，从资源管理的功能中解耦了编程模型（mapreduce），并且增加了许多针对application的调度功能。并由相关的实验数据，证明了该架构确实行之有效，实验数据来源于Yahoo的Hadoop集群。并通过运行在YARN上的计算框架，例如Dryad、Giraph、Hoya、Hadoop MapReduce、REEF、Spark、Storm、Tez等，证明YARN具有良好的扩展性。</p>
+<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h2><p>Apache Hadoop是一个开源的实现了MapReduce模型的计算框架之一，最初主要解决<strong>搜索引擎面临的海量的数据扩展性差</strong>的问题，并着重于数据密集型计算的<strong>容错性</strong>的问题，被很多大型网络公司和创业公司所使用。更重要的是，它成为了一个工程是和研究人员获得计算资源和存储资源的平台。这导致了Hadoop的成功，也带来了很多骂声，因为很多开发者滥用MapReduce导致了程序过多的使用了集群资源。举个栗子，一个常见的场景就是提交“map-only”的作业时，产生大量map task个而不考虑集群资源，还有就是web server这种长的负载以及成群的需要迭代计算的负载。而开发者为了自己获得足够的物理资源，常常通过一些方法来回避MapReduce API的限制，去占用了过多的资源。</p>
+<p>正是这些局限性和资源的滥用，产生了以Hadoop为基础的环境无关方面的论文，很多论文暴露了Hadoop架构和实现方面的问题，以及资源滥用来带的负面影响。并且这些Hadoop架构中的局限性已经被学术界和开源社区所认识。</p>
+<p>本文中，展示了一些由社区主导的来推动Hadoop发展的成果，以及下一代Hadoop计算平台组件YARN。它是从之前整体的架构中，将之前对于每个作业调度的资源管理功能从编程模型中分离出来。在这种新的架构中，MapReduce运行在YARN上的众多应用中的一种，使得在选择计算框架时有很大的灵活性而不仅限于Hadoop MapReduce，并且可以动态的调整以获得性能（可能是资源利用率）的提高。</p>
+<h2 id="2-历史"><a href="#2-历史" class="headerlink" title="2 历史"></a>2 历史</h2><p>YARN的需求是在Hadoop MapReduce发展过程中产生的。随着集群规模的扩大和用户的增多，逐渐暴露出来的弊端促进了Hadoop MapReduce的发展，其中的经验和问题催生了YARN，列举如下：</p>
+<blockquote>
+<ol>
+<li>扩展性</li>
+<li>多租户</li>
+<li>可维护性</li>
+<li>存储位置敏感</li>
+<li>高集群利用率</li>
+<li>可用性</li>
+<li>安全和审计操作的功能</li>
+<li>多样化的编程模型</li>
+<li>灵活的资源模型</li>
+<li>向后兼容性</li>
+</ol>
+</blockquote>
+<p>在实践中YARN的需求时怎样产生的呢？从2006年起，Yahoo！开始采用Apache Hadoop作为基础设施来运行其“WebMap”应用，它构建了一个web网站之间的<code>图（graph）</code>结构，该应用为其搜索引擎提供服务。同时，该网站图（web graph）包含了超过一千亿个节点和一万亿的边。之前名为<code>Dreadnaught</code>的底层基础设施在800台机器的集群中已经遇到了扩展的瓶颈，因此需要一个代替它的框架。Dreadnaught是不能满足类似于MapReduce的分布式作业的，因此需要采用扩展性较好的MapReduce框架，来实现搜索业务的顺利迁移。因此<strong>扩展性</strong>成为了早期Hadoop版本以至于后来的YARN着重考虑的因素。</p>
+<p>除了雅虎搜索引擎大规模的流水作业，在广告分析优化、垃圾邮件过滤、内容优化等方面的需求也驱动了Hadoop发展。同时，Hadoop社区为了扩展Hadoop平台以适应更大规模的MapReduce作业，<strong>多租户</strong>的目标开始成型。在这个过程中，大家也更好的理解了工程开发的优先级和一些中间的阶段。</p>
+<h3 id="2-1-专用集群的时代"><a href="#2-1-专用集群的时代" class="headerlink" title="2.1 专用集群的时代"></a>2.1 专用集群的时代</h3><p>一些早期的Hadoop用户将集群部署在少数节点上，从HDFS加载数据，通过MapReduce计算数据并拉取结果。随着Hadoop的容错机制的完善，将数据持久化到HDFS成为了一个标准。而在雅虎，工程师将加载数据集到一个共享的集群中，这吸引了研究人员兴趣。尽管大规模的计算仍然是开发Hadoop的主要动力，然而HDFS也需要权限模型，分配机制等特性来提高多租户使用的能力。</p>
+<p>为了定位一些多租户使用的问题，雅虎开发并部署了Hadoop on Demand（<code>HOD</code>），它使用<a href="http://www.adaptivecomputing.com/products/open-source/torque/" target="_blank" rel="noopener"><code>Torque</code></a>和<a href="http://www.adaptivecomputing.com/products/open-source/maui/" target="_blank" rel="noopener"><code>Maui</code></a>共享集群物理资源并分配给Hadoop。用户可以向Torque在共享资源池中为作业申请节点，作业会被提交到队列中等待，直到有足够节点可用时才开始运行。当作业运行时，HoD会在主节点启动一个leader进程，它会和Torque，Maui通信并启动slave，随后启动<code>JobTracker</code>和<code>TaskTracker</code>。当用户使用完资源后，节点会被释放，重新回到资源池中。因为HoD为每个作业都启动一个新的集群，所以开发者在测试新版本Hadoop的同时，旧版本Hadoop的运行不受影响。然而Hadoop每三个月就会更新一次主版本，HoD的灵活性难以跟得上这个节奏，于是需要对HoD进行解耦升级工作——增加<strong>可维护性</strong>。</p>
+<p>由于HoD中也可以部署HDFS集群，大多数用户部署计算节点时使用了共享的HDFS实例。随着HDFS集群规模扩展，越来越多的计算节点运行在HDFS的服务之上，提高了数据的用户密度，形成了一个良性循环，打开了一块新的天地。</p>
+<p>实践证明HoD是一个通用框架，它拥有一些<code>Mesos</code>的特性，扩展了framework-master模型，来支持多样的并发编程模型的动态资源分配。它也可以被认为是私有云先驱者，例如AWS的EC2 Elastic MapReduce，微软的Azure HDInsight</p>
+<h3 id="2-2-Hadoop不能满足需求"><a href="#2-2-Hadoop不能满足需求" class="headerlink" title="2.2 Hadoop不能满足需求"></a>2.2 Hadoop不能满足需求</h3><p>雅虎最后由于平庸的集群资源利用率而淘汰了HoD。在<code>map</code>阶段，JobTracker力求task放在离输入数据最近的节点上，最近的当然就是存储该数据的HDFS块所在的节点上。但是由于Torque在分配节点时没有考虑数据位置，分配给用户JobTracker的节点中，可能只包含了部分的数据副本，因此很可能这台机器上并没有task所需的输入数据，于是就需要从其他节点上拉取数据。当作业由大量的task都需要这样的时候，资源争抢会异常激烈。当TaskTracker分布的各个机架时，更增加了跨机架读取数据的可能性，并且在<code>shuffle</code>的时候必然要跨机架的拉取数据，使得按DAG执行的后面的作业也如此。因此关于<strong>存储的位置敏感</strong>（Locality awareness），也是YARN的关键需求之一。</p>
+<p>高层的框架，例如Pig、Hive常常构造MapReduce的工作流成为一个有向无环图（<code>DAG</code>），在计算的每个阶段过滤、聚和、转换数据。因为在使用HoD时，集群大小在创建后是不能调整的，大量的集群资源在等待其他作业执行时是空闲的。一个极端但是却常见的情况就是，只在一个节点上运行的<code>reduce task</code>可能会因为运行时间过长导致该节点资源一直无法被收回，而其他节点此时是空闲的。</p>
+<p>最后，作业响应时间由集群分配时间主导的，而用户很难判断作业到底需要多少节点去执行，常常凭直觉去申请数以十倍的资源。而集群分配时间又很长，以至于用户分配到资源后常常和同事一起使用，这使得这些资源一直被占着无法释放，从而形成让资源分配时间更长的恶性循环。尽管如此，用户也深爱着HoD的一些特性，从经济的角度考量，使得雅虎必须让员工使用共享的集群资源。因此，<strong>高集群利用率</strong>成了YARN的一个高优先级需求。</p>
+<h3 id="2-3-共享集群"><a href="#2-3-共享集群" class="headerlink" title="2.3 共享集群"></a>2.3 共享集群</h3><p>最后，HoD已经无法合理的在资源分配时做出选择，资源分配的粒度太粗，并且它的API迫使用户写一些令人误解的对申请资源的约束条件。然而，向共享集群前进的意义是巨大的。尽管HDFS的规模在过去几年中逐渐扩大，上层的JobTracker却已经被<code>HoD</code>隔离开了。当去掉<code>HoD</code>之后，MapReduce集群规模突然增大，作业吞吐量剧烈增加，一些特性被平白无故的加入到JobTracker中，为一些大bug的埋下了隐患。更糟糕的，一个JobTracker的失败可导致运行中断，并且该集群中所有的作业需要用户手动重新按工作流执行，而之前只是会丢掉当前这一个工作流程的结果。</p>
+<p>集群停掉之后，作业流水线上积累了很多待执行的作业，当集群重启后，JobTracker的压力猛增。以至于重启后常常需要手动杀死一些用户的作业，直到集群被正常的启动。由于每个作业存储的复杂性，在集群重启时保护已提交作业的实现方案一直存在着BUG。</p>
+<p>维护一个多租户的的Hadoop集群是很困难的。当很多接口暴露给用户时，<code>容错能力</code>成了核心的设计原则。针对单点失败，暴露出各种关于可用性的问题，并指出持续的在集群中监控作业是有争议的。具体来说，因为JobTracker需要为每个作业分配监进程的资源，它的访问控制逻辑包含了安全机制来确保自身的可用性；它可能延迟分配出可用资源，因为JobTracker为了监控作业使用了过多的资源。这些都可归结到<strong>可用性</strong>方面上。</p>
+<p>当Hadoop集群的租户增多，并且提交作业类型以及数据来源多种多样，于是资源隔离的问题凸显出来。但是授权模型不够强大，并且没有良好的扩展性，这是多租户集群的一个关键问题。<strong>安全和审计操作</strong>的功能必须在YARN中保留。开发者逐渐增强了这个系统，使其不同于以往基于<code>槽</code>（slot）的资源管理，来适应多样化的资源需求。</p>
+<p>虽然MapReduce支持广泛的使用场景，但并不是一个对所有大规模计算都理想的模型。例如，很多机器学习算法的需要多次的迭代才能得出结果。如果一系列的Mapreduce作业包含这种计算，无疑调度的开销会延迟结果的产生。类似的，<a href="https://en.wikipedia.org/wiki/Bulk_synchronous_parallel" target="_blank" rel="noopener"><code>BSP</code></a>（bulk-synchronous parallel model）模型可以更好的表示许多图算法。 相比于大规模的MapReduce作业的容错机制中的all-to-all的交互障碍，图的节点之间的交互是更合适的。（<em>all-to-all:from a Map stage to the next Reduce stage, one-to-one:from a Reduce stage to the next Map stage.</em><a href="http://dprg.cs.uiuc.edu/docs/iss-socc/socc077-ko.pdf" target="_blank" rel="noopener">另一篇论文</a>）。这种不协调阻碍了用户的生产力，然而MapReduce的中心资源模型是<code>无资源竞争模型</code>。Hadoop在Yahoo的广泛部署以及其数据流水线的重要性加剧了这种矛盾，更糟糕的是，用户通常使用多种框架编写MapReduce程序。对于调度器而言，这种作业被视为<code>map-only</code>的作业，它们常常有完全不同的资源使用曲线，使平台的对作业的预估不准确，拉低了资源利用率，容易产生死锁并增大了不稳定性。因此，YARN必须支持<strong>多样化的编程模型</strong>。</p>
+<p>除了与新型框架需求的不匹配之外，<code>槽</code>的类型固定也会损害利用率。尽管将槽划分为map槽和reduce槽可以防止槽死锁，但这也成为了资源使用的瓶颈。在Hadoop中，由用户为每个作业设置两个阶段的重叠部分，晚启动reduce作业可以增加集群的吞吐量，而早启动reduce作业可以减少执行的时延。map槽和reduce槽的数量是由集群管理员设定的，map槽不能执行reduce task，反之，reduce槽也不能执行map task。因为map task和reduce task的比例通常是不同的，所以没有一种配置能够完美的平衡。任意一种槽出现饱和，<code>JobTracker</code>就很难再初始化新的作业并顺利执行。可实现复杂的调度但又不浪费集群的资源，这突出了对<strong>灵活的资源模型</strong>的需求。</p>
+<p>尽管相比于<code>HoD</code>，共享集群提高了资源利用率，它也引起了对可维护性和可用性的担忧。在集群中部署新版本Hadoop是一件需要很谨慎也很平常的事儿，当修复了MapReduce实现中的bug，需要重启集群再提交作业。通过将资源管理平台和编程框架合并，使它们都得到了发展；当用户提升了平台分配资源的效率，与平台整合的框架也要相应的改变。尽管升级通常仅仅只需要重新编译，但用户的对框架内部细节的一些假设（或者开发者对用户程序的一些假设）也可能会产生一些不兼容。</p>
+<p><center>![](/images/uploads/2017/04/20170409110122.jpg)
+图一 YARN架构（蓝色的是YARN的系统组件，黄色和粉色是两个运行在YARN上的应用）</center><br>建立在Apache Hadoop MapReduce发展的基础上，YARN就是为了解决这些需求（R1-R9）。然而有大量的已经部署的MapReduce应用，以及Hadoop生态系统中相关的项目，使得YARN在设计需要保持兼容性，新架构需要尽量重用之前框架的代码。这也是YARN的最后一个需求：<strong>向后兼容性</strong>。</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-介绍"><span class="toc-text">1 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-历史"><span class="toc-text">2 历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-专用集群的时代"><span class="toc-text">2.1 专用集群的时代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Hadoop不能满足需求"><span class="toc-text">2.2 Hadoop不能满足需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-共享集群"><span class="toc-text">2.3 共享集群</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 宗瓒</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://www.zzwr.site/passages/6c658b9d.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/大数据/"><i class="fa fa-tags"></i>大数据</a>
+     
+      <a href="/tags/资源调度/"><i class="fa fa-tags"></i>资源调度</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">博客推荐</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">系列教程</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+          </span>
+        
+      </div>
+    
+      <div class="site-footer-col">
+        <h5 class="site-footer-title">抓到我</h5>
+        
+          <span class="site-footer-item">
+            <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+          </span>
+        
+          <span class="site-footer-item">
+            <a href="https://segmentfault.com/" target="_blank">思否</a>
+          </span>
+        
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: zanzong@outlook.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+        
+          <div>
+            <img src="/images/th.jpg" alt="WeChat">
+            
+              <p>WeChat</p>
+            
+          </div>
+        
+          <div>
+            <img src="/images/th.jpg" alt="AliPay">
+            
+              <p>AliPay</p>
+            
+          </div>
+        
+      </div>
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/29bba495.html" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    <a href="javascript:void(0);" id="site-reward">
+      <i class="fa fa-thumbs-up"></i>
+    </a>
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

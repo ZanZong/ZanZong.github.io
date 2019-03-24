@@ -6,16 +6,16 @@
   <meta name="author" content="Zan Zong">
   
   
-  <title>关于 | ZZWR</title>
+  <title>计算机系统常用性能指标 | ZZWR</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="计算机系统,性能指标,">
   
 
   
-  <meta name="description" content="饼的日常">
+  <meta name="description" content="计算机系统常用性能指标Cycles per instruction（CPI）表示每条计算机指令执行所需的时钟周期，简称指令的平均周期数，即一个指令被执行时所使用的时钟周期数量。对于一个程序，计算该程序执行完需要多少条机器指令（ins_num），并结合实际的硬件性能计算出需要多少个时钟周期来完成(cyc_num)，可以得到该段程序在这个硬件上的CPI。对于不同的CPU，运行相同的负载得到的CPI是不同的，因此可以作为衡量不同CPU性能的一项指标。">
 
   
 
@@ -40,12 +40,12 @@
     welcome: {"enable":true,"interval":30},
     start_time: "2018-03-12",
     passwords: [],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "Zan Zong",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
     mathjax: true,
-    page_type: "about",
+    page_type: "",
     root: "/"
   };
 </script>
@@ -159,14 +159,68 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="about">
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-03-24
+    </span>
+    
+      <span>
+        | <a href="/categories/计算机系统/"><i class="fa fa-bookmark"></i>计算机系统</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
   <h1 class="passage-title">
-    
-      about
-    
+    计算机系统常用性能指标
   </h1>
+  
   <article class="passage-article">
-    
+    <br>CPI = 执行程序所需要的时钟周期数 / 所执行的指令条数<br>实际上，大多数情况下一段程序会包含多种不同类型的指令，不同类型的指令运行需要不同的指令周期数，可使用如下公式计算<br>\begin{equation}\begin{split}<br>CPI = \frac{\sum_i (IC_i)(CC_i)}{IC}<br>\end{split}\end{equation}<br>其中${IC_i}$是指令类型为i的指令个数，${CC_i}$是完成指令类型i所需要的时钟周期（clock-cycles）个数。$IC=\sum_i{IC_i}$是所有类型指令个数的和。  <p></p>
+<h3 id="Instructions-per-cycle（IPC）"><a href="#Instructions-per-cycle（IPC）" class="headerlink" title="Instructions per cycle（IPC）"></a>Instructions per cycle（IPC）</h3><p>即CPI的倒数</p>
+<h3 id="Millions-of-instructions-per-second-（MIPS）"><a href="#Millions-of-instructions-per-second-（MIPS）" class="headerlink" title="Millions of instructions per second （MIPS）"></a>Millions of instructions per second （MIPS）</h3><p>Instructions per second（IPS），与CPI类似，也是一种衡量CPU性能的指标。它描述了指令的执行速率，规定了性能和执行时间成反比，即与IPC成正比，与CPI成反比。MIPS这种指标的缺点是没有考虑指令的能力，对于使用不同指令集的计算机，相同的程序产生的指令数是不同的，因此无法用MIPS来比较不同指令集的计算机，这个问题也出现在CPI和IPC以上两个指标上。<br>\begin{equation}\begin{split}<br>MIPS = \frac{指令数}{执行时间\times{10^6}} = \frac{时钟频率}{CPI\times{10^6}}<br>\end{split}\end{equation}  </p>
+<p>引用用wiki上的一个例子：<br>一个400-MHz的处理器，运行一个基准测试负载，该负载所包含的指令信息以及指令周期数如下表所示  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Instruction TYPE</th>
+<th style="text-align:center">Instruction count</th>
+<th style="text-align:center">Clock cycle count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Integer Arithmetic</td>
+<td style="text-align:center">45000</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">Data transfer</td>
+<td style="text-align:center">32000</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">Floating point</td>
+<td style="text-align:center">15000</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">Control transfer</td>
+<td style="text-align:center">8000</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>\begin{equation}\begin{split}<br>CPI = \frac{45000\times{1}+32000\times{2}+15000\times{2}+8000\times{2}}{100000} = 1.55<br>\end{split}\end{equation}  </p>
+<p>400MHz = 400,000,000 Hz，假如用MIPS来衡量处理器性能，则有<br>\begin{equation}\begin{split}<br>MIPS = \frac{ClockFrequency}{CPI}\times\frac{1}{1 Million} = \frac{400,000,000}{1.55\times{1000000}} = 258 MIPS<br>\end{split}\end{equation}<br>执行所需的CPU时间为<br>\begin{equation}\begin{split}<br>Execution Time = CPI\times{Instruction count}\times{clocktime}\\<br>= \frac{CPI\times{instruction Count}}{ClockFrequency} = \frac{1.55\times{100000}}{400\times{1000000}} = \frac{1.55}{4000}\ <br>= 0.0003875 sec = 0.3785 ms<br>\end{split}\end{equation}  </p>
+<h3 id="CACHE"><a href="#CACHE" class="headerlink" title="CACHE"></a>CACHE</h3><p>CPU要读取一个数据时，首先从Cache中查找，如果找到就立即读取并送给CPU处理；如果没有找到，就用相对慢的速度从内存中读取并送给CPU处理，同时把这个数据所在的数据块调入Cache中，可以使得以后对整块数据的读取都从Cache中进行，不必再调用内存。CPU在Cache中找到有用的数据被称为命中，当Cache中没有CPU所需的数据时（这时称为未命中），CPU才访问内存。为了保证CPU访问时有较高的命中率，Cache中的内容应该按一定的算法替换，其计数器清零过程可以把一些频繁调用后再不需要的数据淘汰出Cache，提高Cache的利用率。</p>
+<p><a href="https://en.wikipedia.org/wiki/Cycles_per_instruction" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Cycles_per_instruction</a><br><a href="https://baike.baidu.com/item/CPU%E7%BC%93%E5%AD%98" target="_blank" rel="noopener">https://baike.baidu.com/item/CPU%E7%BC%93%E5%AD%98</a></p>
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -174,9 +228,30 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Instructions-per-cycle（IPC）"><span class="toc-text">Instructions per cycle（IPC）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Millions-of-instructions-per-second-（MIPS）"><span class="toc-text">Millions of instructions per second （MIPS）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CACHE"><span class="toc-text">CACHE</span></a></li></ol>
   </div>
 </aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 宗瓒</div>
+      
+        <div>
+          原文链接: 
+          <a href target="_blank">http://www.zzwr.site/passages/2785cf3a.html</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/性能指标/"><i class="fa fa-tags"></i>性能指标</a>
+    
+    </div>
+  
 </div>
 
     </main>
@@ -290,10 +365,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/b5c6204e.html" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/d3b4b981.html" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
