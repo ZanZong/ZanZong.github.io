@@ -180,7 +180,25 @@
   </h1>
   
   <article class="passage-article">
-    <h1 id="启动Spark-History-Server"><a href="#启动Spark-History-Server" class="headerlink" title="启动Spark History Server"></a>启动Spark History Server</h1>
+    <p>在使用Spark计算框架时，由于 Debug 、调优等的需要，常需要查看 Application 的运行时的详细信息。在 Spark 的 WebUI 上可以通过点击每个应用查看，而该应用执行完毕后，页面失效无法打开。Spark 提供了 <code>History Server</code> 来记录负载的详细运行时信息。</p>
+<h1 id="启动HistoryServer"><a href="#启动HistoryServer" class="headerlink" title="启动HistoryServer"></a>启动HistoryServer</h1><ol>
+<li><p>配置日志存放地址。 History Server将日志保存在 Spark 支持的文件系统，例如 HDFS。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在HDFS创建用于存放日志的目录</span></span><br><span class="line">hdfs dfs -mkdir /sparklogs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改配置文件<br>配置文件 <code>spark-env.sh</code>，增加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置history server进程可使用的最大内存，默认1G</span></span><br><span class="line">SPARK_DAEMON_MEMORY=6g</span><br><span class="line"><span class="comment"># 设置logDirectory指向刚创建的目录</span></span><br><span class="line">SPARK_HISTORY_OPTS=<span class="string">"-Dspark.history.fs.logDirectory=hdfs://172.16.244.5:9000/sparklogs"</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>配置文件 <code>spark-defaults.conf</code>，增加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置为true将使用spark.io.compression.codec配置的压缩方法进行压缩，默认为 lz4</span></span><br><span class="line">spark.eventLog.compress          <span class="literal">true</span></span><br><span class="line"><span class="comment"># 开启 eventLog</span></span><br><span class="line">spark.eventLog.enabled           <span class="literal">true</span></span><br><span class="line">spark.eventLog.dir               hdfs://172.16.244.5:9000/sparklogs</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>启动 History Server<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sbin/start-history-server.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>启动后，可在Web页面<a href="http://master:18080（默认18080端口）看到如下页面" target="_blank" rel="noopener">http://master:18080（默认18080端口）看到如下页面</a><br><img src="/images/2019/historyserver1.jpg" alt></p>
+<p>其余配置项可以参考<a href="https://spark.apache.org/docs/latest/monitoring.html" target="_blank" rel="noopener">官方文档</a></p>
+<h1 id="REST-API"><a href="#REST-API" class="headerlink" title="REST API"></a>REST API</h1><p>除了手工查看网页，在使用程序对Application自动监控时，也需要应用的详细执行信息。 History Server 提供使用REST API的方式访问网页, API 地址为 <code>http://&lt;server-url&gt;:18080/api/v1/applications/&lt;application&gt;</code>。 向该地址发送 HTTP 请求，Server 会返回 JSON 格式的信息。 该 API 包括详细的程序执行信息，支持包括applications、jobs、stages、executors等级别的信息查询，详见<a href="https://spark.apache.org/docs/latest/monitoring.html" target="_blank" rel="noopener">官方文档</a>。<br>这里是使用 Python 查询某个application的简要信息的例子。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment"># 查询 app-20190828102157-0009 的提交和结束时间</span></span><br><span class="line">res = requests.get(<span class="string">"http://172.16.244.8:18080/api/v1/applications/app-20190828102157-0009"</span>)</span><br><span class="line">print(res.json())</span><br></pre></td></tr></table></figure></p>
+<p>将输出以下内容<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"id"</span> : <span class="string">"app-20190828102157-0009"</span>,</span><br><span class="line">  <span class="attr">"name"</span> : <span class="string">"gbt-1566958883"</span>,</span><br><span class="line">  <span class="attr">"attempts"</span> : [ &#123;</span><br><span class="line">    <span class="attr">"startTime"</span> : <span class="string">"2019-08-28T02:21:56.000GMT"</span>,</span><br><span class="line">    <span class="attr">"endTime"</span> : <span class="string">"2019-08-28T02:27:24.061GMT"</span>,</span><br><span class="line">    <span class="attr">"lastUpdated"</span> : <span class="string">"2019-08-28T02:27:24.135GMT"</span>,</span><br><span class="line">    <span class="attr">"duration"</span> : <span class="number">328061</span>,</span><br><span class="line">    <span class="attr">"sparkUser"</span> : <span class="string">"ubuntu"</span>,</span><br><span class="line">    <span class="attr">"completed"</span> : <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"endTimeEpoch"</span> : <span class="number">1566959244061</span>,</span><br><span class="line">    <span class="attr">"lastUpdatedEpoch"</span> : <span class="number">1566959244135</span>,</span><br><span class="line">    <span class="attr">"startTimeEpoch"</span> : <span class="number">1566958916000</span></span><br><span class="line">  &#125; ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -188,7 +206,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#启动Spark-History-Server"><span class="toc-text">启动Spark History Server</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#启动HistoryServer"><span class="toc-text">启动HistoryServer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#REST-API"><span class="toc-text">REST API</span></a></li></ol>
   </div>
 </aside>
   
